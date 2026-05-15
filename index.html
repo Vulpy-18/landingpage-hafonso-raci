@@ -1,0 +1,1629 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Método R.A.C.I. — Hafonso Miguel | Terapeuta Holístico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================================================
+       DESIGN TOKENS — PALETA ARCTURIANA
+    ============================================================ */
+      :root {
+        --gold: #cfa33d;
+        --gold-glow: rgba(207, 163, 61, 0.35);
+        --gold-dim: rgba(207, 163, 61, 0.15);
+        --violet: #8e44ad;
+        --violet-mid: rgba(142, 68, 173, 0.45);
+        --violet-dim: rgba(142, 68, 173, 0.12);
+        --lilac: #e6c5fd;
+        --cream: #f4f1e6;
+        --void: #150824; /* fundo principal */
+        --deep: #473410; /* fundo secundário */
+        --deep-mid: #130d2a;
+        --card-bg: rgba(19, 13, 42, 0.85);
+        --border: rgba(207, 163, 61, 0.28);
+        --text-body: rgba(244, 241, 230, 0.88);
+        --text-muted: rgba(215, 200, 226, 0.65);
+
+        --ff-head: "Cinzel", serif;
+        --ff-body: "Montserrat", sans-serif;
+
+        --radius: 12px;
+        --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* ============================================================
+       RESET & BASE
+    ============================================================ */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+      }
+
+      body {
+        font-family: var(--ff-body);
+        background-color: var(--void);
+        color: var(--text-body);
+        overflow-x: hidden;
+        line-height: 1.7;
+        cursor: default;
+      }
+
+      /* ============================================================
+       STARFIELD CANVAS (fundo animado com estrelas)
+    ============================================================ */
+      #starfield {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.6;
+      }
+
+      /* ============================================================
+       LAYOUT HELPERS
+    ============================================================ */
+      .container {
+        width: min(90%, 1100px);
+        margin-inline: auto;
+      }
+
+      section {
+        position: relative;
+        z-index: 1;
+        padding-block: clamp(60px, 8vw, 120px);
+      }
+
+      /* ============================================================
+       DIVIDER ORNAMENTAL
+    ============================================================ */
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-block: 32px;
+      }
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+      }
+      .divider span {
+        font-family: var(--ff-head);
+        color: var(--gold);
+        font-size: 0.75rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--ff-head);
+        line-height: 1.2;
+        color: var(--cream);
+      }
+
+      h1 {
+        font-size: clamp(2rem, 5vw, 3.6rem);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+      h2 {
+        font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+        font-weight: 600;
+        letter-spacing: 0.03em;
+      }
+      h3 {
+        font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+        font-weight: 600;
+      }
+      h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      p {
+        margin-block: 0.75em;
+        font-weight: 300;
+      }
+
+      .text-gold {
+        color: var(--gold);
+      }
+      .text-lilac {
+        color: var(--lilac);
+      }
+      .text-muted {
+        color: var(--text-muted);
+      }
+      .text-center {
+        text-align: center;
+      }
+
+      /* ============================================================
+       CTA BUTTON
+    ============================================================ */
+      .btn-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 40px;
+        font-family: var(--ff-head);
+        font-size: 0.9rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--void);
+        background: linear-gradient(
+          135deg,
+          #e0b84a 0%,
+          var(--gold) 50%,
+          #a8801f 100%
+        );
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: var(--transition);
+        box-shadow:
+          0 0 24px var(--gold-glow),
+          0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+      .btn-cta::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.25) 50%,
+          transparent 70%
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+      }
+      .btn-cta:hover::before {
+        transform: translateX(100%);
+      }
+      .btn-cta:hover {
+        box-shadow:
+          0 0 48px rgba(207, 163, 61, 0.6),
+          0 8px 32px rgba(0, 0, 0, 0.5);
+        transform: translateY(-2px);
+      }
+      .btn-cta svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+
+      /* ============================================================
+       FADE-IN REVEAL (Intersection Observer)
+    ============================================================ */
+      .reveal {
+        opacity: 0;
+        transform: translateY(36px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ============================================================
+       NAVBAR
+    ============================================================ */
+      #navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 18px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition:
+          background 0.4s ease,
+          box-shadow 0.4s ease;
+      }
+      #navbar.scrolled {
+        background: rgba(6, 4, 15, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 1px 0 var(--border);
+      }
+      .nav-logo {
+        font-family: var(--ff-head);
+        font-size: 0.95rem;
+        letter-spacing: 0.12em;
+        color: var(--gold);
+        text-decoration: none;
+      }
+      .nav-cta {
+        padding: 9px 24px;
+        font-family: var(--ff-head);
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 1px solid var(--gold);
+        background: transparent;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: var(--transition);
+      }
+      .nav-cta:hover {
+        background: var(--gold);
+        color: var(--void);
+      }
+
+      /* ============================================================
+       HERO
+    ============================================================ */
+      #hero {
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-inline: 5%;
+        padding-block-start: 100px;
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 50% 30%,
+            rgba(142, 68, 173, 0.22) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 50% 40% at 80% 80%,
+            rgba(207, 163, 61, 0.08) 0%,
+            transparent 60%
+          );
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--ff-head);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        padding: 6px 18px;
+        margin-bottom: 32px;
+        background: var(--gold-dim);
+      }
+      .hero-badge::before {
+        content: "";
+        display: block;
+        width: 6px;
+        height: 6px;
+        background: var(--gold);
+        border-radius: 50%;
+        box-shadow: 0 0 8px var(--gold);
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.7);
+        }
+      }
+
+      #hero h1 {
+        max-width: 820px;
+        margin-inline: auto;
+        margin-bottom: 20px;
+        background: linear-gradient(160deg, #f4f1e6 40%, #cfa33d 80%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero-subtitle {
+        max-width: 640px;
+        margin-inline: auto;
+        margin-bottom: 48px;
+        font-size: clamp(0.95rem, 1.8vw, 1.12rem);
+        color: var(--lilac);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.75;
+      }
+
+      .hero-glow-orb {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(142, 68, 173, 0.18) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        animation: orb-breathe 6s ease-in-out infinite;
+      }
+      @keyframes orb-breathe {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 0.7;
+        }
+        50% {
+          transform: translate(-50%, -50%) scale(1.15);
+          opacity: 1;
+        }
+      }
+
+      /* rune circle decorativo */
+      .hero-ring {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        border: 1px solid rgba(207, 163, 61, 0.07);
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: ring-spin 60s linear infinite;
+        pointer-events: none;
+      }
+      .hero-ring-2 {
+        width: 900px;
+        height: 900px;
+        border-width: 1px;
+        border-color: rgba(142, 68, 173, 0.07);
+        animation-duration: 90s;
+        animation-direction: reverse;
+      }
+      @keyframes ring-spin {
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      /* ============================================================
+       SEÇÃO 2 — PARA QUEM É
+    ============================================================ */
+      #para-quem {
+        background: linear-gradient(
+          180deg,
+          var(--void) 0%,
+          var(--deep) 50%,
+          var(--void) 100%
+        );
+      }
+
+      .para-quem-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: start;
+        margin-top: 52px;
+      }
+
+      .check-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .check-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 0.95rem;
+        color: var(--text-body);
+      }
+      .check-list li::before {
+        content: "◆";
+        color: var(--gold);
+        font-size: 0.65rem;
+        margin-top: 6px;
+        flex-shrink: 0;
+      }
+
+      /* ============================================================
+       SEÇÃO 3 — O QUE O MÉTODO TRABALHA
+    ============================================================ */
+      #o-que-trabalha {
+        background: var(--deep-mid);
+      }
+
+      .tags-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 40px;
+        justify-content: center;
+      }
+      .tag {
+        padding: 10px 22px;
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        font-family: var(--ff-head);
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--cream);
+        background: var(--violet-dim);
+        transition: var(--transition);
+      }
+      .tag:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+        background: var(--gold-dim);
+        box-shadow: 0 0 16px var(--gold-glow);
+      }
+
+      /* ============================================================
+       SEÇÃO 4 — AS 4 ETAPAS
+    ============================================================ */
+      #etapas {
+        background: linear-gradient(180deg, var(--void) 0%, var(--deep) 100%);
+      }
+
+      .steps-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 52px;
+      }
+
+      .step-card {
+        position: relative;
+        padding: 36px 44px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--card-bg);
+        backdrop-filter: blur(8px);
+        overflow: hidden;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .step-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--gold) 0%, var(--violet) 100%);
+        border-radius: 4px 0 0 4px;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+      .step-card:hover::before,
+      .step-card.open::before {
+        opacity: 1;
+      }
+      .step-card:hover,
+      .step-card.open {
+        border-color: rgba(207, 163, 61, 0.45);
+        box-shadow:
+          0 8px 40px rgba(0, 0, 0, 0.4),
+          0 0 30px var(--gold-glow);
+      }
+
+      .step-header {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+      .step-letter {
+        font-family: var(--ff-head);
+        font-size: clamp(2.8rem, 6vw, 4rem);
+        font-weight: 900;
+        color: transparent;
+        -webkit-text-stroke: 1px var(--gold);
+        line-height: 1;
+        min-width: 56px;
+        transition: var(--transition);
+      }
+      .step-card:hover .step-letter,
+      .step-card.open .step-letter {
+        -webkit-text-stroke-color: transparent;
+        color: var(--gold);
+        text-shadow: 0 0 24px var(--gold-glow);
+      }
+      .step-info {
+        flex: 1;
+      }
+      .step-toggle {
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        transition: var(--transition);
+      }
+      .step-card.open .step-toggle {
+        transform: rotate(45deg);
+      }
+
+      .step-body {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.4s ease;
+      }
+      .step-body-inner {
+        overflow: hidden;
+      }
+      .step-card.open .step-body {
+        grid-template-rows: 1fr;
+      }
+
+      .step-content {
+        padding-top: 24px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        border-top: 1px solid var(--border);
+        margin-top: 20px;
+      }
+      .step-content-block h4 {
+        margin-bottom: 10px;
+      }
+      .step-content-block ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .step-content-block ul li {
+        font-size: 0.9rem;
+        color: var(--lilac);
+        padding-left: 14px;
+        position: relative;
+      }
+      .step-content-block ul li::before {
+        content: "—";
+        color: var(--gold);
+        position: absolute;
+        left: 0;
+      }
+
+      /* ============================================================
+       SEÇÃO 5 — ESTRUTURA & DIFERENCIAIS
+    ============================================================ */
+      #estrutura {
+        background: var(--deep-mid);
+      }
+
+      .estrutura-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-top: 52px;
+      }
+      .info-card {
+        padding: 36px 28px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--card-bg);
+        backdrop-filter: blur(8px);
+        transition: var(--transition);
+        text-align: center;
+      }
+      .info-card:hover {
+        border-color: rgba(207, 163, 61, 0.4);
+        box-shadow: 0 4px 32px var(--gold-glow);
+        transform: translateY(-4px);
+      }
+      .info-card .icon {
+        font-size: 2rem;
+        margin-bottom: 16px;
+      }
+      .info-card h3 {
+        font-size: 1rem;
+        color: var(--gold);
+        margin-bottom: 12px;
+      }
+      .info-card p {
+        font-size: 0.88rem;
+        color: var(--lilac);
+        margin: 0;
+      }
+
+      /* ============================================================
+       SEÇÃO 6 — SOBRE O TERAPEUTA + CARROSSEL
+    ============================================================ */
+      #sobre {
+        background: linear-gradient(180deg, var(--void) 0%, var(--deep) 100%);
+      }
+
+      .sobre-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+      }
+
+      .sobre-bio p {
+        font-size: 0.97rem;
+        line-height: 1.85;
+      }
+
+      .crth-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--ff-head);
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        color: var(--gold);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        padding: 6px 18px;
+        margin-top: 24px;
+        background: var(--gold-dim);
+      }
+
+      /* ---- CARROSSEL ---- */
+      .carousel-wrap {
+        position: relative;
+      }
+      .carousel-track-outer {
+        overflow: hidden;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+      }
+      .carousel-track {
+        display: flex;
+        transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .carousel-slide {
+        min-width: 100%;
+        aspect-ratio: 9/16;
+        overflow: hidden;
+        position: relative;
+      }
+      .carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      /* overlay elegante sobre imagem */
+      .carousel-slide::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 55%,
+          rgba(6, 4, 15, 0.7) 100%
+        );
+      }
+
+      .carousel-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 20px;
+      }
+      .carousel-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--card-bg);
+        color: var(--gold);
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+      }
+      .carousel-btn:hover {
+        background: var(--gold);
+        color: var(--void);
+        border-color: var(--gold);
+      }
+      .carousel-dots {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .dot.active {
+        background: var(--gold);
+        box-shadow: 0 0 8px var(--gold);
+        width: 20px;
+        border-radius: 4px;
+      }
+
+      /* ============================================================
+       SEÇÃO CTA FINAL
+    ============================================================ */
+      #cta-final {
+        text-align: center;
+        background:
+          radial-gradient(
+            ellipse 70% 50% at 50% 50%,
+            rgba(142, 68, 173, 0.2) 0%,
+            transparent 70%
+          ),
+          var(--deep);
+        padding-block: 100px;
+      }
+      #cta-final h2 {
+        max-width: 700px;
+        margin-inline: auto;
+        margin-bottom: 16px;
+        background: linear-gradient(160deg, var(--cream) 40%, var(--gold));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      #cta-final p {
+        max-width: 520px;
+        margin-inline: auto;
+        margin-bottom: 48px;
+        color: var(--lilac);
+      }
+
+      /* ============================================================
+       FOOTER
+    ============================================================ */
+      footer {
+        position: relative;
+        z-index: 1;
+        padding: 48px 5%;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        text-align: center;
+        background: var(--void);
+      }
+      .footer-logo {
+        font-family: var(--ff-head);
+        font-size: 1.1rem;
+        letter-spacing: 0.12em;
+        color: var(--cream);
+      }
+      .footer-logo span {
+        color: var(--gold);
+      }
+      footer p {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin: 0;
+      }
+
+      /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+      @media (max-width: 900px) {
+        .para-quem-grid,
+        .sobre-grid {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        .estrutura-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .step-content {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 600px) {
+        .estrutura-grid {
+          grid-template-columns: 1fr;
+        }
+        .step-card {
+          padding: 24px 20px;
+        }
+        .step-letter {
+          font-size: 2.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+     STARFIELD CANVAS
+============================================================ -->
+    <canvas id="starfield"></canvas>
+
+    <!-- ============================================================
+     NAVBAR
+============================================================ -->
+    <nav id="navbar">
+      <a href="#hero" class="nav-logo">HAFONSO MIGUEL</a>
+      <a href="#cta-final" class="nav-cta">Iniciar Jornada</a>
+    </nav>
+
+    <!-- ============================================================
+     SEÇÃO 1 — HERO
+============================================================ -->
+    <section id="hero">
+      <div class="hero-ring"></div>
+      <div class="hero-ring hero-ring-2"></div>
+      <div class="hero-glow-orb"></div>
+
+      <div class="container" style="position: relative; z-index: 2">
+        <div class="hero-badge reveal">Método Terapêutico Profundo</div>
+
+        <h1 class="reveal" style="transition-delay: 0.1s">
+          MÉTODO R.A.C.I.<br />
+          <span
+            style="
+              font-size: 0.65em;
+              font-weight: 400;
+              letter-spacing: 0.06em;
+              color: var(--lilac);
+            "
+          >
+            Resgate Apométrico da Criança Interior
+          </span>
+        </h1>
+
+        <p class="hero-subtitle reveal" style="transition-delay: 0.2s">
+          "Não se trata apenas de aliviar dores emocionais. O verdadeiro
+          objetivo é libertar a criança interior aprisionada nos padrões do
+          passado e fortalecer o adulto consciente para viver com mais leveza,
+          presença e prosperidade."
+        </p>
+
+        <a
+          href="#cta-final"
+          class="btn-cta reveal"
+          style="transition-delay: 0.3s"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+          Iniciar Minha Transformação
+        </a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     SEÇÃO 2 — PARA QUEM É
+============================================================ -->
+    <section id="para-quem">
+      <div class="container">
+        <div class="divider reveal"><span>O Método</span></div>
+        <h2 class="text-center reveal" style="transition-delay: 0.1s">
+          Quem é o Método R.A.C.I.?
+        </h2>
+
+        <div class="para-quem-grid">
+          <div class="reveal" style="transition-delay: 0.15s">
+            <p>
+              O Método R.A.C.I. foi desenvolvido para pessoas que sentem que já
+              tentaram de tudo, mas continuam repetindo os mesmos padrões
+              emocionais, financeiros, afetivos e familiares.
+            </p>
+            <p>
+              É um processo terapêutico profundo que atua na
+              <strong style="color: var(--gold)"
+                >origem dos bloqueios emocionais e sistêmicos</strong
+              >, promovendo liberação, consciência e reorganização interna.
+            </p>
+            <p>
+              Mais do que aliviar sintomas, o método busca identificar e tratar
+              a <em style="color: var(--lilac)">raiz do problema</em>.
+            </p>
+          </div>
+
+          <div class="reveal" style="transition-delay: 0.25s">
+            <h3 style="margin-bottom: 24px; color: var(--gold)">
+              Para quem é esse trabalho?
+            </h3>
+            <ul class="check-list">
+              <li>Sentem bloqueios financeiros constantes</li>
+              <li>Vivem relações desgastantes ou repetitivas</li>
+              <li>Carregam medo de rejeição, abandono ou solidão</li>
+              <li>Se anulam para agradar os outros</li>
+              <li>
+                Sentem ansiedade, sobrecarga emocional ou sensação de vazio
+              </li>
+              <li>
+                Já fizeram terapias, mas percebem que algo mais profundo ainda
+                precisa ser trabalhado
+              </li>
+              <li>
+                Sentem que carregam dores familiares ou padrões ancestrais
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     SEÇÃO 3 — O QUE O MÉTODO TRABALHA
+============================================================ -->
+    <section id="o-que-trabalha">
+      <div class="container">
+        <div class="divider reveal"><span>Áreas de Atuação</span></div>
+        <h2 class="text-center reveal" style="transition-delay: 0.1s">
+          O Que o Método Trabalha
+        </h2>
+        <p
+          class="text-center text-muted reveal"
+          style="transition-delay: 0.15s; max-width: 540px; margin-inline: auto"
+        >
+          O processo atua em diferentes níveis, alcançando camadas profundas da
+          experiência humana:
+        </p>
+
+        <div class="tags-grid reveal" style="transition-delay: 0.2s">
+          <span class="tag">Criança Interior</span>
+          <span class="tag">Padrões Emocionais Inconscientes</span>
+          <span class="tag">Relação com Pai e Mãe</span>
+          <span class="tag">Lealdades Familiares Invisíveis</span>
+          <span class="tag">Bloqueios Energéticos</span>
+          <span class="tag">Escassez e Travas Financeiras</span>
+          <span class="tag">Ansiedade e Medo</span>
+          <span class="tag">Repetições Sistêmicas</span>
+          <span class="tag">Fortalecimento da Identidade Adulta</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     SEÇÃO 4 — AS 4 ETAPAS (ACCORDION)
+============================================================ -->
+    <section id="etapas">
+      <div class="container">
+        <div class="divider reveal"><span>A Jornada</span></div>
+        <h2 class="text-center reveal" style="transition-delay: 0.1s">
+          A Jornada R.A.C.I.
+        </h2>
+        <p
+          class="text-center text-muted reveal"
+          style="transition-delay: 0.15s; max-width: 500px; margin-inline: auto"
+        >
+          Resgate · Ancoragem · Cura · Integração
+        </p>
+
+        <!-- Clique nos cards para expandir -->
+        <div class="steps-wrap">
+          <!-- R -->
+          <div class="step-card reveal" data-step>
+            <div class="step-header">
+              <div class="step-letter">R</div>
+              <div class="step-info">
+                <h4>Etapa 1</h4>
+                <h3 style="color: var(--cream)">Resgate</h3>
+                <p
+                  class="text-muted"
+                  style="margin: 4px 0 0; font-size: 0.88rem"
+                >
+                  Leitura profunda do campo emocional, energético e sistêmico
+                </p>
+              </div>
+              <div class="step-toggle">+</div>
+            </div>
+            <div class="step-body">
+              <div class="step-body-inner">
+                <div class="step-content">
+                  <div class="step-content-block">
+                    <h4>O que acontece</h4>
+                    <p style="font-size: 0.9rem; color: var(--lilac)">
+                      Identificação das feridas da infância, padrões
+                      repetitivos, bloqueios, influências familiares e raízes da
+                      escassez. A pessoa compreende a origem real dos seus
+                      bloqueios.
+                    </p>
+                  </div>
+                  <div class="step-content-block">
+                    <h4>Ferramentas</h4>
+                    <ul>
+                      <li>Anamnese</li>
+                      <li>Apometria</li>
+                      <li>Leitura energética</li>
+                      <li>Avaliação sistêmica</li>
+                      <li>Limpeza de ambientes</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- A -->
+          <div
+            class="step-card reveal"
+            style="transition-delay: 0.08s"
+            data-step
+          >
+            <div class="step-header">
+              <div class="step-letter">A</div>
+              <div class="step-info">
+                <h4>Etapa 2</h4>
+                <h3 style="color: var(--cream)">Ancoragem</h3>
+                <p
+                  class="text-muted"
+                  style="margin: 4px 0 0; font-size: 0.88rem"
+                >
+                  Criação de segurança emocional e energética
+                </p>
+              </div>
+              <div class="step-toggle">+</div>
+            </div>
+            <div class="step-body">
+              <div class="step-body-inner">
+                <div class="step-content">
+                  <div class="step-content-block">
+                    <h4>Benefícios</h4>
+                    <p style="font-size: 0.9rem; color: var(--lilac)">
+                      A criança interior começa a ser acolhida e fortalecida. O
+                      sistema emocional aprende que não precisa mais sobreviver
+                      através do medo. Acolhimento, estabilidade, redução da
+                      ansiedade.
+                    </p>
+                  </div>
+                  <div class="step-content-block">
+                    <h4>Ferramentas</h4>
+                    <ul>
+                      <li>Reiki</li>
+                      <li>Meditações</li>
+                      <li>Reprogramação emocional</li>
+                      <li>Geometria sagrada</li>
+                      <li>Exercícios sistêmicos</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- C -->
+          <div
+            class="step-card reveal"
+            style="transition-delay: 0.16s"
+            data-step
+          >
+            <div class="step-header">
+              <div class="step-letter">C</div>
+              <div class="step-info">
+                <h4>Etapa 3</h4>
+                <h3 style="color: var(--cream)">Cura</h3>
+                <p
+                  class="text-muted"
+                  style="margin: 4px 0 0; font-size: 0.88rem"
+                >
+                  Fase de liberação profunda e transformação ancestral
+                </p>
+              </div>
+              <div class="step-toggle">+</div>
+            </div>
+            <div class="step-body">
+              <div class="step-body-inner">
+                <div class="step-content">
+                  <div class="step-content-block">
+                    <h4>Objetivos</h4>
+                    <p style="font-size: 0.9rem; color: var(--lilac)">
+                      Liberar padrões, encerrar ciclos, reduzir cargas
+                      emocionais. Atua sobre cargas familiares e ancestrais,
+                      questões do pai, mãe, escassez e medos profundos.
+                      Fortalecimento do adulto.
+                    </p>
+                  </div>
+                  <div class="step-content-block">
+                    <h4>Ferramentas</h4>
+                    <ul>
+                      <li>Apometria de limpeza</li>
+                      <li>Liberação sistêmica</li>
+                      <li>Reiki terapêutico</li>
+                      <li>Integração emocional</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- I -->
+          <div
+            class="step-card reveal"
+            style="transition-delay: 0.24s"
+            data-step
+          >
+            <div class="step-header">
+              <div class="step-letter">I</div>
+              <div class="step-info">
+                <h4>Etapa 4</h4>
+                <h3 style="color: var(--cream)">Integração</h3>
+                <p
+                  class="text-muted"
+                  style="margin: 4px 0 0; font-size: 0.88rem"
+                >
+                  Consolidação de uma nova forma de viver
+                </p>
+              </div>
+              <div class="step-toggle">+</div>
+            </div>
+            <div class="step-body">
+              <div class="step-body-inner">
+                <div class="step-content">
+                  <div class="step-content-block">
+                    <h4>Resultados</h4>
+                    <p style="font-size: 0.9rem; color: var(--lilac)">
+                      Clareza, autoestima elevada, relações saudáveis, senso de
+                      pertencimento, prosperidade e autonomia emocional.
+                      Reorganização do novo padrão emocional, energético e
+                      sistêmico.
+                    </p>
+                  </div>
+                  <div class="step-content-block">
+                    <h4>Ferramentas</h4>
+                    <ul>
+                      <li>Reprogramação sistêmica</li>
+                      <li>Integração emocional</li>
+                      <li>Fortalecimento energético</li>
+                      <li>Ancoragem da identidade adulta</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /steps-wrap -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+     SEÇÃO 5 — ESTRUTURA & DIFERENCIAIS
+============================================================ -->
+    <section id="estrutura">
+      <div class="container">
+        <div class="divider reveal"><span>Estrutura</span></div>
+        <h2 class="text-center reveal" style="transition-delay: 0.1s">
+          Jornada Terapêutica Completa
+        </h2>
+
+        <div class="estrutura-grid">
+          <div class="info-card reveal" style="transition-delay: 0.1s">
+            <div class="icon">🌑</div>
+            <h3>9 Sessões Individuais</h3>
+            <p>
+              Processo personalizado, conduzido com atenção plena à sua
+              trajetória única.
+            </p>
+          </div>
+          <div class="info-card reveal" style="transition-delay: 0.18s">
+            <div class="icon">🌙</div>
+            <h3>4 a 5 Meses</h3>
+            <p>
+              Sessões quinzenais para que as transformações se consolidem em
+              profundidade real.
+            </p>
+          </div>
+          <div class="info-card reveal" style="transition-delay: 0.26s">
+            <div class="icon">✦</div>
+            <h3>Foco na Raiz</h3>
+            <p>
+              Não tratamos sintomas. Acessamos a origem emocional e sistêmica do
+              bloqueio.
+            </p>
+          </div>
+        </div>
+
+        <div class="divider reveal" style="margin-top: 60px">
+          <span>O Que Você Perceberá</span>
+        </div>
+
+        <div
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 8px;
+          "
+          class="reveal"
+          style="transition-delay: 0.1s"
+        >
+          <span class="tag">Maior Consciência</span>
+          <span class="tag">Leveza Emocional</span>
+          <span class="tag">Redução da Autossabotagem</span>
+          <span class="tag">Clareza de Propósito</span>
+          <span class="tag">Segurança Emocional</span>
+        </div>
+
+        <div
+          style="
+            margin-top: 52px;
+            padding: 40px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            max-width: 760px;
+            margin-inline: auto;
+          "
+          class="reveal"
+        >
+          <h4
+            style="
+              margin-bottom: 16px;
+              text-align: center;
+              letter-spacing: 0.15em;
+            "
+          >
+            O diferencial do Método R.A.C.I.
+          </h4>
+          <p
+            style="
+              text-align: center;
+              color: var(--cream);
+              font-size: 0.95rem;
+              margin: 0;
+            "
+          >
+            Integra terapia sistêmica, Apometria, Reprogramação emocional,
+            Criança interior, Cura ancestral e energética. O foco não é o
+            sintoma — é a <strong style="color: var(--gold)">origem</strong>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     SEÇÃO 6 — SOBRE + CARROSSEL
+============================================================ -->
+    <section id="sobre">
+      <div class="container">
+        <div class="divider reveal"><span>O Terapeuta</span></div>
+
+        <div class="sobre-grid">
+          <div class="sobre-bio reveal">
+            <h2 style="margin-bottom: 28px">
+              Quem é <span class="text-gold">Hafonso Miguel?</span>
+            </h2>
+            <p>
+              Eu sou Hafonso Miguel, terapeuta holístico e sistêmico. Desde 2022
+              comecei a trabalhar como terapeuta e descobri que essa é a minha
+              missão:
+              <strong style="color: var(--gold)"
+                >ajudar outras pessoas a despertarem</strong
+              >.
+            </p>
+            <p>
+              Tenho formação em Constelação Sistêmica, Apometria, Reiki e
+              técnicas de reprogramação energética. Desenvolvi o Método
+              R.A.C.I., um trabalho voltado para acessar e transformar raízes
+              profundas emocionais, energéticas e sistêmicas.
+            </p>
+            <div class="crth-badge">✦ CRTH-BR 12393</div>
+          </div>
+
+          <!-- CARROSSEL -->
+          <div class="carousel-wrap reveal" style="transition-delay: 0.15s">
+            <div class="carousel-track-outer">
+              <div class="carousel-track" id="carouselTrack">
+                <!-- SLIDE 1: Foto do Hafonso -->
+                <div class="carousel-slide">
+                  <img
+                    src="https://i.ibb.co/ccFfLgpW/Hafonso.png"
+                    alt="Hafonso Miguel — Terapeuta Holístico"
+                  />
+                </div>
+
+                <!-- SLIDE 2: Hafonso em atendimento -->
+                <div class="carousel-slide">
+                  <img
+                    src="https://i.ibb.co/9Qw0T3P/Trabalho-Hafonso.jpg"
+                    alt="Hafonso Miguel em sessão terapêutica"
+                  />
+                </div>
+
+                <!-- SLIDE 3: Consultório -->
+                <div class="carousel-slide">
+                  <img
+                    src="https://i.ibb.co/8gsmM6Gt/Consutorio-Hafonso1.jpg"
+                    alt="Ambiente terapêutico do consultório"
+                  />
+                </div>
+
+                <!-- SLIDE 4: Extra (evento, palestra, etc.) -->
+                <div class="carousel-slide">
+                  <img
+                    src="https://i.ibb.co/KxfX7J1R/Consutorio-Hafonso2.jpg"
+                    alt="Ambiente terapêutico do consultório 2"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="carousel-controls">
+              <button class="carousel-btn" id="prevBtn" aria-label="Anterior">
+                &#8592;
+              </button>
+              <div class="carousel-dots" id="carouselDots"></div>
+              <button class="carousel-btn" id="nextBtn" aria-label="Próximo">
+                &#8594;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     SEÇÃO CTA FINAL
+============================================================ -->
+    <section id="cta-final">
+      <div class="container">
+        <div class="divider reveal"><span>Próximo Passo</span></div>
+        <h2 class="reveal" style="transition-delay: 0.1s">
+          Sua transformação começa<br />com uma escolha
+        </h2>
+        <p class="reveal" style="transition-delay: 0.18s; color: var(--cregam)">
+          Se algo nessas palavras ressoou em você, talvez seu sistema já saiba
+          que está pronto para um trabalho diferente — profundo, real e
+          duradouro.
+        </p>
+        <a
+          href="https://wa.me/5585987505858?text=Olá!%20Vim%20pelo%20seu%20Site.%20Quero%20mais%20informações%20sobre%20o%20método%20R.A.C.I"
+          class="btn-cta reveal"
+          style="transition-delay: 0.26s"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+          Quero Iniciar Minha Jornada R.A.C.I.
+        </a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+     FOOTER
+============================================================ -->
+    <footer>
+      <div class="footer-logo"><span>✦</span> SUPORTE <span>✦</span></div>
+      <p>CRTH-BR 12393 · Terapeuta Holístico e Sistêmico</p>
+      <p style="font-size: 0.72rem">
+        © 2026 Hafonso Miguel · Todos os direitos reservados <br />
+        <a
+          href="https://wa.me/5585987505858?text=Olá!%20Vim%20pelo%20seu%20Site.%20Quero%20mais%20informações%20sobre%20o%20método%20R.A.C.I"
+          style="color: var(--gold)"
+          target="_blank"
+          rel="noopener noreferrer"
+          >WhatsApp</a
+        >
+        |
+        <a
+          href="https://www.instagram.com//"
+          style="color: var(--gold)"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Instagram</a
+        >
+        <br />
+        Arquitetura e design desta página por
+        <a
+          href="https://levymelo.netlify.app"
+          style="font-weight: 200; color: var(--gold)"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Levy Melo — DEV de Sistemas</a
+        >
+      </p>
+    </footer>
+
+    <!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+    <script>
+      /* ---- STARFIELD CANVAS ---- */
+      (function () {
+        const canvas = document.getElementById("starfield");
+        const ctx = canvas.getContext("2d");
+        let stars = [];
+
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener("resize", () => {
+          resize();
+          init();
+        });
+
+        function init() {
+          stars = Array.from({ length: 200 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.2 + 0.2,
+            a: Math.random(),
+            speed: Math.random() * 0.004 + 0.001,
+            phase: Math.random() * Math.PI * 2,
+          }));
+        }
+        init();
+
+        function draw(ts) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          stars.forEach((s) => {
+            const opacity =
+              0.3 + 0.7 * Math.abs(Math.sin(s.phase + ts * s.speed));
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(244,241,230,${opacity * s.a})`;
+            ctx.fill();
+          });
+          requestAnimationFrame(draw);
+        }
+        requestAnimationFrame(draw);
+      })();
+
+      /* ---- NAVBAR SCROLL ---- */
+      const navbar = document.getElementById("navbar");
+      window.addEventListener(
+        "scroll",
+        () => {
+          navbar.classList.toggle("scrolled", window.scrollY > 50);
+        },
+        { passive: true },
+      );
+
+      /* ---- INTERSECTION OBSERVER (REVEAL) ---- */
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              revealObserver.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => revealObserver.observe(el));
+
+      /* ---- ACCORDION ETAPAS ---- */
+      document.querySelectorAll("[data-step]").forEach((card) => {
+        card.querySelector(".step-header").addEventListener("click", () => {
+          const isOpen = card.classList.contains("open");
+          // fecha todos
+          document
+            .querySelectorAll("[data-step]")
+            .forEach((c) => c.classList.remove("open"));
+          // abre o clicado (se não estava aberto)
+          if (!isOpen) card.classList.add("open");
+        });
+      });
+
+      /* ---- CARROSSEL ---- */
+      (function () {
+        const track = document.getElementById("carouselTrack");
+        const slides = track.querySelectorAll(".carousel-slide");
+        const dots = document.getElementById("carouselDots");
+        const prev = document.getElementById("prevBtn");
+        const next = document.getElementById("nextBtn");
+        let current = 0;
+        let timer;
+
+        // Cria dots
+        slides.forEach((_, i) => {
+          const d = document.createElement("button");
+          d.className = "dot" + (i === 0 ? " active" : "");
+          d.setAttribute("aria-label", `Slide ${i + 1}`);
+          d.addEventListener("click", () => goTo(i));
+          dots.appendChild(d);
+        });
+
+        function goTo(n) {
+          current = (n + slides.length) % slides.length;
+          track.style.transform = `translateX(-${current * 100}%)`;
+          dots
+            .querySelectorAll(".dot")
+            .forEach((d, i) => d.classList.toggle("active", i === current));
+          resetTimer();
+        }
+
+        prev.addEventListener("click", () => goTo(current - 1));
+        next.addEventListener("click", () => goTo(current + 1));
+
+        // Autoplay 5s
+        function resetTimer() {
+          clearInterval(timer);
+          timer = setInterval(() => goTo(current + 1), 5000);
+        }
+        resetTimer();
+
+        // Swipe mobile
+        let startX = 0;
+        track.addEventListener(
+          "touchstart",
+          (e) => {
+            startX = e.touches[0].clientX;
+          },
+          { passive: true },
+        );
+        track.addEventListener(
+          "touchend",
+          (e) => {
+            const diff = startX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+          },
+          { passive: true },
+        );
+      })();
+    </script>
+  </body>
+</html>
